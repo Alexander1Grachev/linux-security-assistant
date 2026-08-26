@@ -12,43 +12,25 @@ export interface LogEvent {
   meta?: Record<string, unknown>;
 }
 
+
 export class Logger {
-  private static instance: Logger;
 
-  private readonly logDir: string;
-  private readonly logFile: string;
-
-  private constructor() {
-    this.logDir = path.join(
-      os.homedir(),
-      "projects",
-      "ai-security-assistant",
-      "logs"
-    );
-    this.logFile = path.join(this.logDir, "events.log");
-    fs.mkdirSync(this.logDir, { recursive: true });
+  constructor(private readonly logFile: string) {
+    fs.mkdirSync(path.dirname(logFile), { recursive: true });
   }
 
-  // Единая точка доступа — все модули получают один и тот же инстанс
-  static getInstance(): Logger {
-    if (!Logger.instance) {
-      Logger.instance = new Logger();
-    }
-    return Logger.instance;
-  }
-
-  logEvent(
+  logEvent( 
     level: LogLevel,
     source: string,
     message: string,
-    meta?: Record<string, unknown>
+    meta?: Record<string, unknown>,
   ): void {
     const event: LogEvent = {
       timestamp: new Date().toISOString(),
       level,
       source,
       message,
-        ...(meta !== undefined && { meta }), // если мета есть положи еслии нет не добавляй
+      ...(meta !== undefined && { meta }),
     };
 
     fs.appendFileSync(this.logFile, JSON.stringify(event) + "\n");
@@ -59,9 +41,10 @@ export class Logger {
         : level === "warn"
           ? "🟡 WARN"
           : "🟢 INFO";
+
     console.log(
       `[${event.timestamp}] ${prefix} [${source}] ${message}`,
-      meta ?? ""
+      meta ?? "",
     );
   }
 }

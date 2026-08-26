@@ -1,18 +1,15 @@
 import chokidar, { FSWatcher } from "chokidar";
 import { exec } from "node:child_process";
 import path from "node:path";
-import os from "node:os";
 import { Logger } from "../logger/logger.js";
 
 export class DownloadsWatcher {
-  private readonly downloadsDir: string;
-  private readonly logger: Logger;
   private watcher: FSWatcher | null = null;
 
-  constructor() {
-    this.downloadsDir = path.join(os.homedir(), "Downloads");
-    this.logger = Logger.getInstance();
-  }
+  constructor( 
+    private readonly logger: Logger,
+    private readonly downloadsDir: string,
+  ) {}
 
   start(): void {
     this.logger.logEvent(

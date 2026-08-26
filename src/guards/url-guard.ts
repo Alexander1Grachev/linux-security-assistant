@@ -12,20 +12,12 @@ interface VtAnalysisResult {
 }
 
 export class UrlGuard {
-  private readonly logger: Logger;
-  private readonly cache: UrlCache;
-  private readonly apiKey: string;
+  constructor(
+    private readonly logger: Logger,
+    private readonly cache: UrlCache,
+    private readonly apiKey: string,
+  ) {}
 
-  constructor() {
-    this.logger = Logger.getInstance();
-    this.cache = new UrlCache();
-
-    const key = process.env.VT_API_KEY;
-    if (!key) {
-      throw new Error("VT_API_KEY не найден в переменных окружения (.env)");
-    }
-    this.apiKey = key;
-  }
 
   async checkUrl(url: string): Promise<{ safe: boolean; details: unknown; source: string }> {
     // Шаг 1: whitelist — доверенные домены пропускаем сразу
