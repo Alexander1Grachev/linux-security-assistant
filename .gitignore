@@ -4,3 +4,4 @@ dist
 logs/
 .disabled
 cache/
+tools/piper/
