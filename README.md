@@ -1,4 +1,4 @@
-# 🛡️ AI Security Assistant
+# 🛡️ Linux Security Assistant
 
 Pet-project на TypeScript / Node.js для исследования
 Linux security monitoring, интеграции системных инструментов и
